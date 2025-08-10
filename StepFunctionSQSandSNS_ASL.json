@@ -1,0 +1,36 @@
+{
+  "Comment": "Transaction Processor State Machine Using SQS and SNS",
+  "StartAt": "ProcessTransaction",
+  "States": {
+    "ProcessTransaction": {
+      "Type": "Pass",
+      "Next": "BroadcastToSqs"
+    },
+    "BroadcastToSqs": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sqs:sendMessage",
+      "Parameters": {
+        "QueueUrl": "REPLACE_WITH_SQS_URL",
+        "MessageBody": {
+          "TransactionId.$": "$.TransactionId",
+          "Type.$": "$.Type"
+        }
+      },
+      "ResultPath": "$.SqsResult",
+      "Next": "BroadcastToSns"
+    },
+    "BroadcastToSns": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "TopicArn": "REPLACE_WITH_SNS_TOPIC_ARN",
+        "Message": {
+          "TransactionId.$": "$.TransactionId",
+          "Type.$": "$.Type",
+          "Source": "Step Functions!"
+        }
+      },
+      "End": true
+    }
+  }
+}
