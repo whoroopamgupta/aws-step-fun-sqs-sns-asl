@@ -10,7 +10,7 @@
       "Type": "Task",
       "Resource": "arn:aws:states:::sns:publish",
       "Parameters": {
-        "TopicArn": "Replace ME!",
+        "TopicArn": "Replace ME",
         "Message": {
           "TransactionId.$": "$.TransactionId",
           "Type.$": "$.Type",
