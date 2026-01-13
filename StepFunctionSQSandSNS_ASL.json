@@ -1,3 +1,4 @@
+
 {
   "Comment": "Transaction Processor State Machine Using SQS and SNS",
   "StartAt": "ProcessTransaction",
